@@ -24,7 +24,7 @@ module.exports.getUserById = (req, res) => {
       }
     })
     .catch((err) => {
-      if (err.user === 'CastError') {
+      if (err.name === 'ValidationError' || err.name === 'CastError') {
         return res.status(ERROR_CODE).send({ message: 'Проверьте введенные данные' });
       }
       return res.status(ERROR_DEFAULT).send({ message: 'Произошла ошибка', ...err });
