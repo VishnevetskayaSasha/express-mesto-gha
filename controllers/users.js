@@ -20,10 +20,15 @@ module.exports.getUserById = (req, res) => {
         res.status(200).send(user);
       } else {
       // throw new Error({ message: 'Пользователь не найден' });
-        res.status(ERROR_CODE).send({ message: 'Пользователь не найден' });
+        res.status(ERROR_LACK).send({ message: 'Пользователь не найден' });
       }
     })
-    .catch((err) => res.status(ERROR_DEFAULT).send({ message: 'Произошла ошибка', ...err }));
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        return res.status(ERROR_CODE).send({ message: 'Проверьте введенные данные' });
+      }
+      return res.status(ERROR_DEFAULT).send({ message: 'Произошла ошибка', ...err });
+    });
 };
 
 // создаёт пользователя
