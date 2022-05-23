@@ -133,7 +133,7 @@ module.exports.login = (req, res, next) => {
     .select('+password')
     .then((user) => {
       if (!user) {
-        throw new BadRequest('Не верный email или пароль');
+        throw new Unauthorized('Не верный email или пароль');
       }
       bcrypt.compare(password, user.password)
         .then((matched) => {
