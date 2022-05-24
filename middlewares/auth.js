@@ -3,7 +3,6 @@ const jwt = require('jsonwebtoken');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 const Unauthorized = require('../error/Unauthorized '); // 401
-const Forbidden = require('../error/Forbidden'); // 403
 
 module.exports = (req, res, next) => {
   // const token = req.headers.authorization; // токен из заголовка
@@ -15,7 +14,7 @@ module.exports = (req, res, next) => {
   try {
     payload = jwt.verify(token, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret');
   } catch (err) {
-    next(new Forbidden('Нет доступа'));
+    next(new Unauthorized('Нет доступа'));
   }
   req.user = payload;
   next();
